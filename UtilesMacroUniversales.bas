@@ -6,7 +6,7 @@ Option Explicit
 '***UtilesMacroUniversales******************************************
 '***Todas las macros son de autoria propia, las cuales pueden*******
 '***ser copiadas mediante copyleft**********************************
-'***Propietario: Omar AndrÈ de la Sota******************************
+'***Propietario: Omar Andr√© de la Sota******************************
 '***correo: aozoro@gmail********************************************
 '*******************************************************************
 
@@ -65,7 +65,7 @@ Sub QuitarEspaciosDiferentes(ByVal Rng As Range)
     Dim largo As Integer
     Dim blank2 As String, blank3 As String, blank4 As String, blank5 As String, blank6 As String
 
-    blank2 = "†"
+    blank2 = "¬†"
     blank3 = " "
     blank4 = vbCrLf
     blank5 = vbCr
@@ -95,9 +95,9 @@ Sub QuitarApostrofes(ByVal Rng As Range)
         Apostrofe5 As String
 
     Apostrofe1 = "'"
-    Apostrofe2 = "¥"
+    Apostrofe2 = "¬¥"
     Apostrofe3 = "`"
-    Apostrofe4 = "®"
+    Apostrofe4 = "¬®"
     Apostrofe5 = """"
 
     For Each celda In Rng.Cells
@@ -337,7 +337,7 @@ Public Function VerificadorDeColumnas(ByVal NumeroDeColumnas As Integer) As Bool
     Else
         If K > NumeroDeColumnas Then
             NumeroDeColumnasError = K - NumeroDeColumnas
-            MsgBox "Hay m·s de " & NumeroDeColumnas & " Columnas. Por favor corregir la(s) " & NumeroDeColumnasError & " columnas de m·s manualmente de la hoja " & ActiveSheet.Name
+            MsgBox "Hay m√°s de " & NumeroDeColumnas & " Columnas. Por favor corregir la(s) " & NumeroDeColumnasError & " columnas de m√°s manualmente de la hoja " & ActiveSheet.Name
         Else
             NumeroDeColumnasError = NumeroDeColumnas - K
             MsgBox "Hay menos " & NumeroDeColumnas & " Columnas. Por favor corregir la(s) " & NumeroDeColumnasError & " columnas faltantes manualmente de la hoja " & ActiveSheet.Name
@@ -544,18 +544,16 @@ Public Function ElegirCarpeta()
 End Function
 
 Public Function NuevoLibro(ParamArray NombreDeEncabezado() As Variant) As Workbook
-    'Crea un nuevo libro con los encabezados imputados
-    
+    'Crea un nuevo libro con los encabezados imputados 
     Dim UltimoIndice As Integer
     Dim i As Integer
     
     UltimoIndice = UBound(NombreDeEncabezado)
-    Workbooks.Add
+    Set NuevoLibro = Workbooks.Add
     
     For i = 0 To UltimoIndice
-        Cells(1, i + 1).Value = NombreDeEncabezado(i)
+        Libro.ActiveSheet.Cells(1, i + 1).Value = NombreDeEncabezado(i)
     Next i
-    Set NuevoLibro = ActiveWorkbook
 End Function
 
 Sub QuitarFilasEnBlancoC(ByVal NumeroDeColuma As Integer, _
@@ -612,7 +610,7 @@ Sub SepararHojas(ByVal Folder As String, ByVal file As String)
     Dim LibroNuevo As Workbook
     Dim NombreHoja As String
     
-    Workbooks.Open Filename:=Folder & "\" & file
+    Workbooks.Open FileName:=Folder & "\" & file
     Set Libro = ActiveWorkbook
      
     If Libro.Worksheets.Count <> 1 Then
@@ -620,7 +618,7 @@ Sub SepararHojas(ByVal Folder As String, ByVal file As String)
             NombreHoja = Hoja.Name
             Hoja.Copy
             Set LibroNuevo = ActiveWorkbook
-            LibroNuevo.SaveAs Filename:=Folder & "\" & CrearLlave(NombreHoja, file)
+            LibroNuevo.SaveAs FileName:=Folder & "\" & CrearLlave(NombreHoja, file)
             LibroNuevo.Close savechanges:=False
         Next Hoja
         Libro.Close savechanges:=False
