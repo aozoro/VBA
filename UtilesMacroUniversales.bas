@@ -1430,3 +1430,27 @@ Public Function FechaFinalDefecto(ByVal Fecha As Date)
     If Fecha = 0 Then Fecha = 401769
     FechaFinalDefecto = Fecha
 End Function
+
+Public Function ValoresUnicos(ByVal Rng As Range) As Variant
+    Dim celda As Range
+    Dim Unicos()
+    Dim RngAcotado As Range
+    Dim j As Integer
+    
+    If Rng Is Nothing Then Exit Function
+    j = 0
+    For Each celda In Rng.Cells
+        If j = 0 Then
+            ReDim Unicos(j)
+            Unicos(j) = celda.Value
+            j = j + 1
+        ElseIf j > 0 And celda.Value <> "" And UbicacionDelElementoEnVector(celda.Value, Unicos) = -1 Then
+            ReDim Preserve Unicos(j)
+            Unicos(j) = celda.Value
+            j = j + 1
+        End If
+    Next celda
+    
+    ValoresUnicos = Unicos
+End Function
+
