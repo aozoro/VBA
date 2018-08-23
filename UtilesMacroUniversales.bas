@@ -1465,3 +1465,57 @@ Public Function CondicionFecha( _
         Format(Fecha, "dd/mm/yyyy") <= FechaSuperior _
         Then CondicionFecha = True
 End Function
+
+Sub SeleccionMuestra( _
+    ByVal HojaInput_x As Worksheet, _
+    ByVal ColumnaCriterio_x As Integer, _
+    ByVal ColumnaTotales_x As Integer, _
+    ByVal ColumnaSeleccion_x As Integer, _
+    ByVal HojaOutput_y As Worksheet, _
+    ByVal ColumnaCriterio_y As Integer, _
+    ByVal ColumnaProbabilidad_y As Integer, _
+    ByVal ColumnaSeleccion_y As Integer, _
+    Optional ByVal QuitarNoSeleccion As Boolean = True, _
+    Optional ByVal MensajeSeleccion As String = "Seleccionada", _
+    Optional ByVal MensajeNoSeleccion As String = "")
+
+    Dim i As Double, j As Double, n_x As Double, n_y As Double
+    Dim Limites() As Integer
+    Dim acuml As Double
+
+    n_x = EncontrarMaximaFila(HojaInput_x, ColumnaTotales_x, ColumnaSeleccion_x)
+    n_y = EncontrarUltimaFila(HojaOutput_y, ColumnaProbabilidad_y)
+
+    Call FiltrarOrdenarHojaPorColumna(ColumnaProbabilidad_y, HojaOutput_y, n_y, False)
+    Call FiltrarOrdenarHojaPorColumna(ColumnaCriterio_y, HojaOutput_y, n_y, False)
+    Call FiltrarOrdenarHojaPorColumna(ColumnaCriterio_x, HojaInput_x, n_x, False)
+
+    ReDim Limites(n_x - 1, 2) As Integer
+
+    For i = 2 To n_x
+        With HojaInput_x
+            acuml = acuml + .Cells(i, ColumnaTotales_x).Value
+            Limites(i - 1, 1) = acuml - .Cells(i, ColumnaTotales_x).Value + 1
+            Limites(i - 1, 2) = Limites(i - 1, 1) + .Cells(i, ColumnaSeleccion_x).Value - 1
+        End With
+    Next i
+
+    For i = 2 To n_y
+        For j = 2 To n_x
+            If i - 1 >= Limites(j - 1, 1) And i - 1 <= Limites(j - 1, 2) Then
+                With HojaOutput_y.Cells(i, ColumnaSeleccion_y)
+                    If .Value = "" Then
+                        .Value = MensajeSeleccion
+                        .NumberFormat = "General"
+                    Else
+                        .Value = MensajeNoSeleccion
+                        .NumberFormat = "General"
+                    End If
+                End With
+            End If
+        Next j
+    Next i
+
+    If QuitarNoSeleccion Then Call QuitarFilasEnBlancoC(ColumnaSeleccion_y, n_y, HojaOutput_y)
+End Sub
+
