@@ -544,7 +544,8 @@ Public Function ElegirCarpeta()
 End Function
 
 Public Function NuevoLibro(ParamArray NombreDeEncabezado() As Variant) As Workbook
-    'Crea un nuevo libro con los encabezados imputados 
+    'Crea un nuevo libro con los encabezados imputados
+    
     Dim UltimoIndice As Integer
     Dim i As Integer
     
@@ -552,7 +553,7 @@ Public Function NuevoLibro(ParamArray NombreDeEncabezado() As Variant) As Workbo
     Set NuevoLibro = Workbooks.Add
     
     For i = 0 To UltimoIndice
-        Libro.ActiveSheet.Cells(1, i + 1).Value = NombreDeEncabezado(i)
+        NuevoLibro.ActiveSheet.Cells(1, i + 1).Value = NombreDeEncabezado(i)
     Next i
 End Function
 
@@ -1466,7 +1467,7 @@ Public Function CondicionFecha( _
         Then CondicionFecha = True
 End Function
 
-Sub SeleccionMuestra( _
+Sub FuncionSeleccion( _
     ByVal HojaInput_x As Worksheet, _
     ByVal ColumnaCriterio_x As Integer, _
     ByVal ColumnaTotales_x As Integer, _
@@ -1482,7 +1483,7 @@ Sub SeleccionMuestra( _
     Dim i As Double, j As Double, n_x As Double, n_y As Double
     Dim Limites() As Integer
     Dim acuml As Double
-
+    
     n_x = EncontrarMaximaFila(HojaInput_x, ColumnaTotales_x, ColumnaSeleccion_x)
     n_y = EncontrarUltimaFila(HojaOutput_y, ColumnaProbabilidad_y)
 
@@ -1518,4 +1519,3 @@ Sub SeleccionMuestra( _
 
     If QuitarNoSeleccion Then Call QuitarFilasEnBlancoC(ColumnaSeleccion_y, n_y, HojaOutput_y)
 End Sub
-
