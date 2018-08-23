@@ -1454,3 +1454,14 @@ Public Function ValoresUnicos(ByVal Rng As Range) As Variant
     ValoresUnicos = Unicos
 End Function
 
+Public Function CondicionFecha( _
+    ByVal Fecha As Date, _
+    ByVal FechaInferior As Date, _
+    ByVal FechaSuperior As Date) As Boolean
+    
+    CondicionFecha = False
+        
+    If Format(Fecha, "dd/mm/yyyy") >= FechaInferior And _
+        Format(Fecha, "dd/mm/yyyy") <= FechaSuperior _
+        Then CondicionFecha = True
+End Function
