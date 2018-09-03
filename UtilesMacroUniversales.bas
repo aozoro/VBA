@@ -1355,36 +1355,46 @@ Public Function CrearFiltroQuery(ByVal ColumnNumber As Integer, ByVal Filtros As
     
 End Function
 
-Public Function TextToMatrix(ByVal Text As Variant) As Variant
+Public Function TextToMatrix(ByVal text As Variant, Optional ByVal Duplicados As Boolean = False) As Variant
     Dim Arreglo() As Variant
     Dim N As Integer
     Dim j As Integer
     
-    If InStr(Text, ",") = 0 Then
-        If Text <> "" Then
+    If InStr(text, ",") = 0 Then
+        If text <> "" Then
             ReDim Arreglo(0)
             On Error Resume Next
-            Arreglo(0) = Text * 1
+            Arreglo(0) = Trim(text)
             If Err.Number <> 0 Then Arreglo(0) = 0
             On Error GoTo 0
         Else
+            ReDim Arreglo(0)
             Arreglo(0) = 0
         End If
     Else
         j = 0
         On Error Resume Next
-        Do While InStr(Text, ",") <> 0
-            N = InStr(Text, ",")
-            ReDim Preserve Arreglo(j)
-            Arreglo(j) = Left(Text, N - 1) * 1
-            Text = Mid(Text, N + 1)
-            j = j + 1
+        N = InStr(text, ",")
+        ReDim Preserve Arreglo(j)
+        Arreglo(j) = Trim(Left(text, N - 1))
+        text = Trim(Mid(text, N + 1))
+        j = j + 1
+        Do While InStr(text, ",") <> 0
+            N = InStr(text, ",")
+            If Duplicados Or ElementoEnVector(Trim(Left(text, N - 1)), Arreglo) = False Then
+                ReDim Preserve Arreglo(j)
+                Arreglo(j) = Trim(Left(text, N - 1))
+                j = j + 1
+            End If
+            text = Trim(Mid(text, N + 1))
         Loop
         
-        ReDim Preserve Arreglo(j)
-        Arreglo(j) = Text * 1
+        If Duplicados Or ElementoEnVector(Trim(text), Arreglo) = False Then
+            ReDim Preserve Arreglo(j)
+            Arreglo(j) = Trim(text)
+        End If
+        
         If Err.Number <> 0 Then
-            'MsgBox "Por favor Modificar los criterios"
             Exit Function
         End If
 
@@ -1392,7 +1402,6 @@ Public Function TextToMatrix(ByVal Text As Variant) As Variant
     End If
     
     TextToMatrix = Arreglo
-    
 End Function
 
 Sub InsertarColumnasNuevas(ByVal ubicacion As Integer, ByVal Hoja As Worksheet, ParamArray Etiquetas() As Variant)
