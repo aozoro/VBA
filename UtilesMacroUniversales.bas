@@ -1404,6 +1404,37 @@ Public Function TextToMatrix(ByVal text As Variant, Optional ByVal Duplicados As
     TextToMatrix = Arreglo
 End Function
 
+Public Function MatrixToText(ByVal Matrix As Variant, _
+    Optional ByVal SaltoDeLinea As Boolean = False, _
+    Optional ByVal sepLeft As String = "", _
+    Optional ByVal sepRight As String = "") As String
+    
+    Dim txt As String
+    Dim o As Integer, T As Integer, i As Integer
+    Dim conector As String
+    
+    conector = ","
+    
+    If SaltoDeLinea Then
+        conector = conector & Chr(13) + Chr(10)
+    Else
+        conector = conector & " "
+    End If
+    
+    If IsArray(Matrix) Then
+        T = UBound(Matrix)
+        o = LBound(Matrix)
+        txt = sepLeft & Matrix(o) & sepRight
+        For i = o + 1 To T
+            txt = txt & conector & sepLeft & Matrix(i) & sepRight
+        Next i
+    Else
+        txt = Matrix
+    End If
+    If txt = "Falso" Then txt = ""
+    MatrixToText = txt
+End Function
+
 Sub InsertarColumnasNuevas(ByVal ubicacion As Integer, ByVal Hoja As Worksheet, ParamArray Etiquetas() As Variant)
     Dim i, o, T As Integer
     Dim indice As Integer
