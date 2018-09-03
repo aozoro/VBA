@@ -1559,3 +1559,31 @@ Sub FuncionSeleccion( _
 
     If QuitarNoSeleccion Then Call QuitarFilasEnBlancoC(ColumnaSeleccion_y, n_y, HojaOutput_y)
 End Sub
+
+Sub EliminarColumnasIgualesA(ByVal Hoja As Worksheet, ParamArray Criteria() As Variant)
+    Dim i As Integer, U As Integer
+    Dim N_Columna As Integer
+    
+    U = UBound(Criteria)
+    
+    For i = 0 To U
+        N_Columna = BuscadorDeEncabezado(Hoja, Criteria(i))
+        If N_Columna <> 0 Then Hoja.Cells(1, N_Columna).EntireColumn.Delete
+    Next i
+End Sub
+
+Sub EliminarColumnasDistintasA(ByVal Hoja As Worksheet, ParamArray Criteria() As Variant)
+    Dim i As Integer, U As Integer
+    Dim N_Columna As Integer
+    
+    U = NumeroDeColumnas(Hoja)
+    i = 1
+    Do While i <= U
+        If ElementoEnVector(Hoja.Cells(1, i).Value, Criteria) = 0 Then
+            Hoja.Cells(1, i).EntireColumn.Delete
+            U = NumeroDeColumnas(Hoja)
+        Else
+            i = i + 1
+        End If
+    Loop
+End Sub
