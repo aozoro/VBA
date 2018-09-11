@@ -418,8 +418,7 @@ Public Function ContarSinRepetirOrdenando(ByVal NumeroDeColumna As Integer, Opti
         If Cells(i - 1, NumeroDeColumna) <> Cells(i, NumeroDeColumna).Value Then j = j + 1
     Next i
     
-    ContarSinRepetir = j
-    
+    ContarSinRepetir = j    
 End Function
 
 Public Function ElementoEnVector(ByVal Elemento, ByVal Vector) As Boolean
@@ -469,6 +468,7 @@ Public Function UbicacionDelElementoEnVector(ByVal Elemento As Variant, ByVal Li
     UbicacionDelElementoEnVector = Application.WorksheetFunction.VLookup(Elemento, Arreglo, 2, 0)
     On Error GoTo 0
 End Function
+
 Sub BuscarEnLaColumna(ByVal HojaDeTrabajo As Worksheet, ByVal ColumnaABuscar As Integer, _
     ParamArray Criterio() As Variant)
     'Crea una columna dando valores 1=Encontrado, 0=No Encontrado
@@ -522,6 +522,7 @@ Sub CopiarColumnasDeUnaHojaAOtra(ByVal HojaOutput As Worksheet, ByVal HojaInput 
         End If
     Next i
 End Sub
+
 Sub EncenderAcelerarMacro()
     Application.ScreenUpdating = False
     Application.Calculation = xlCalculationManual
@@ -544,8 +545,6 @@ Public Function ElegirCarpeta()
 End Function
 
 Public Function NuevoLibro(ParamArray NombreDeEncabezado() As Variant) As Workbook
-    'Crea un nuevo libro con los encabezados imputados
-    
     Dim UltimoIndice As Integer
     Dim i As Integer
     
@@ -969,6 +968,7 @@ Public Function RangoTotal(Optional ByVal Hoja As Worksheet = Nothing, _
         Set RangoTotal = .Range(.Cells(1, 1), .Cells(N, K))
     End With
 End Function
+
 Sub FiltrarOrdenarHojaPorColumna(ByVal Columna As Integer, _
     Optional ByVal Hoja As Worksheet = Nothing, _
     Optional ByVal UltimaFila As Double, _
