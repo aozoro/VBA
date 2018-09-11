@@ -1587,3 +1587,51 @@ Sub EliminarColumnasDistintasA(ByVal Hoja As Worksheet, ParamArray Criteria() As
         End If
     Loop
 End Sub
+
+Public Function ColumnToMatrix(ByVal Columna As Integer, _
+    Optional ByVal FilaInicial As Double = 2, _
+    Optional ByVal Hoja As Worksheet) As Variant
+    
+    Dim Rng As Range
+    Dim T As Double
+    Dim celda As Range
+    Dim Matriz()
+    Dim dimension As Integer
+    
+    If Hoja Is Nothing Then Set Hoja = ActiveSheet
+    T = EncontrarUltimaFila(Hoja, Columna)
+    Set Rng = RangoTotalColumna(Columna, FilaInicial, T, Hoja)
+    
+    dimension = 0
+    For Each celda In Rng.Cells
+        ReDim Preserve Matriz(dimension)
+        Matriz(dimension) = celda.Value
+        dimension = dimension + 1
+    Next celda
+    
+    ColumnToMatrix = Matriz
+End Function
+
+Public Function ColumnToMatrix(ByVal Columna As Integer, _
+    Optional ByVal FilaInicial As Double = 2, _
+    Optional ByVal Hoja As Worksheet) As Variant
+    
+    Dim Rng As Range
+    Dim T As Double
+    Dim celda As Range
+    Dim Matriz()
+    Dim dimension As Integer
+    
+    If Hoja Is Nothing Then Set Hoja = ActiveSheet
+    T = EncontrarUltimaFila(Hoja, Columna)
+    Set Rng = RangoTotalColumna(Columna, FilaInicial, T, Hoja)
+    
+    dimension = 0
+    For Each celda In Rng.Cells
+        ReDim Preserve Matriz(dimension)
+        Matriz(dimension) = celda.Value
+        dimension = dimension + 1
+    Next celda
+    
+    ColumnToMatrix = Matriz
+End Function
