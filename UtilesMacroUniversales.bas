@@ -1635,3 +1635,31 @@ Public Function ColumnToMatrix(ByVal Columna As Integer, _
     
     ColumnToMatrix = Matriz
 End Function
+
+Sub CrearHojaIterada(Optional HojaName As String = "Hoja", _
+    Optional Before As Boolean = False, _
+    Optional ByVal HojaRerencia As Worksheet)
+    
+    Dim Sufijo As String
+    Dim Hoja As Worksheet
+    Dim j As Integer
+    
+    If HojaRerencia Is Nothing Then Set HojaRerencia = ActiveSheet
+    
+    If Before Then
+        Set Hoja = Worksheets.Add(Before:=HojaRerencia)
+    Else
+        Set Hoja = Worksheets.Add(After:=HojaRerencia)
+    End If
+    
+    j = 1
+    On Error Resume Next
+    Hoja.Name = HojaName & j
+    Do While Err.Number <> 0
+        j = j + 1
+        Hoja.Name = HojaName & j
+        If Hoja.Name = HojaName & j Then
+            On Error GoTo 0
+        End If
+    Loop
+End Sub
