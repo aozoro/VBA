@@ -192,8 +192,7 @@ Public Sub AgregarHojas(ByVal cantidad As Integer, _
     If cantidad = 1 Then
         Hoja.Name = Left(Hoja.Name, Len(Hoja.Name) - 1)
     End If
-    On Error GoTo 0
-    
+    On Error GoTo 0 
 End Sub
 
 Public Function SumaFilasEnLibro(ByVal Libro As Workbook, _
@@ -1055,7 +1054,6 @@ Public Function RangoAcotado(Optional ByVal Hoja As Worksheet, _
     With Hoja
         Set RangoAcotado = .Range(.Cells(FilaInicial, ColumnaInicial), .Cells(FilaFinal, ColumnaFinal))
     End With
-
 End Function
 
 Public Function SumaVectorInteger(ByRef Vector() As Integer) As Integer
@@ -1250,10 +1248,8 @@ Sub BorrarFilasIgualesA(ByVal Hoja As Worksheet, _
             If sw2 = True And FilaBuscada > UltimaFila Then
                 .Range(.Cells(Inicial, Columna), .Cells(Final, Columna).EntireRow).Delete
             End If
-        Loop
-        
+        Loop       
     End With
-    
 End Sub
 
 Sub CrearColumnaLlave(ByVal Hoja As Worksheet, _
@@ -1351,8 +1347,7 @@ Public Function CrearFiltroQuery(ByVal ColumnNumber As Integer, ByVal Filtros As
     
     For i = o To T
         CrearFiltroQuery = CrearFiltroQuery & " or " & column & Filtros(i)
-    Next i
-    
+    Next i  
 End Function
 
 Public Function TextToMatrix(ByVal text As Variant, Optional ByVal Duplicados As Boolean = False) As Variant
@@ -1587,30 +1582,6 @@ Sub EliminarColumnasDistintasA(ByVal Hoja As Worksheet, ParamArray Criteria() As
         End If
     Loop
 End Sub
-
-Public Function ColumnToMatrix(ByVal Columna As Integer, _
-    Optional ByVal FilaInicial As Double = 2, _
-    Optional ByVal Hoja As Worksheet) As Variant
-    
-    Dim Rng As Range
-    Dim T As Double
-    Dim celda As Range
-    Dim Matriz()
-    Dim dimension As Integer
-    
-    If Hoja Is Nothing Then Set Hoja = ActiveSheet
-    T = EncontrarUltimaFila(Hoja, Columna)
-    Set Rng = RangoTotalColumna(Columna, FilaInicial, T, Hoja)
-    
-    dimension = 0
-    For Each celda In Rng.Cells
-        ReDim Preserve Matriz(dimension)
-        Matriz(dimension) = celda.Value
-        dimension = dimension + 1
-    Next celda
-    
-    ColumnToMatrix = Matriz
-End Function
 
 Public Function ColumnToMatrix(ByVal Columna As Integer, _
     Optional ByVal FilaInicial As Double = 2, _
