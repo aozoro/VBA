@@ -1634,3 +1634,24 @@ Sub CrearHojaIterada(Optional HojaName As String = "Hoja", _
         End If
     Loop
 End Sub
+
+Sub HojasDeLibroToCombo(ByVal Combo As Object, _
+    ByVal PathArchive As String, _
+    Optional ByVal Pass As String = "", _
+    Optional ByVal LimpiarCombo As Boolean = True)
+    
+    Dim Libro As Workbook
+    Dim Hoja As Worksheet
+
+    Call EncenderAcelerarMacro
+    If LimpiarCombo Then Combo.Clear
+    On Error Resume Next
+    Set Libro = Workbooks.Open(FileName:=PathArchive, UpdateLinks:=0, Password:=Pass)
+    If Err.Number <> 0 Then Exit Sub
+    On Error GoTo 0
+    For Each Hoja In Libro.Worksheets
+        Combo.AddItem Hoja.Name
+    Next Hoja
+    Libro.Close SaveChanges:=False
+    Call ApagarAcelerarMacro
+End Sub
