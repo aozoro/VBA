@@ -1655,3 +1655,19 @@ Sub HojasDeLibroToCombo(ByVal Combo As Object, _
     Libro.Close SaveChanges:=False
     Call ApagarAcelerarMacro
 End Sub
+
+Sub ComboToCombo(ByVal ComboBoxInput As Object, _
+    ByVal ComboBoxOutput As Object, _
+    Optional ByVal BorrarComboOutput As Boolean = True)
+    
+    Dim Item As Variant
+    
+    If BorrarComboOutput Then ComboBoxOutput.Clear
+    For Each Item In ComboBoxInput.List
+        If Item <> "" Then
+            ComboBoxOutput.AddItem Item
+        Else
+            Exit For
+        End If
+    Next Item
+End Sub
