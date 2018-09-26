@@ -1679,3 +1679,29 @@ Sub ColocarFiltros(Optional ByVal Hoja As Worksheet, Optional Rng As Range)
     If Hoja.AutoFilterMode Then Rng.AutoFilter
     Rng.AutoFilter
 End Sub
+
+Public Function RangoFiltrado(ByVal ColumnaFiltro As Integer, _
+    ByVal Criteria As String, _
+    ByVal ColumnasFiltradas, _
+    Optional ByVal Hoja As Worksheet) As Range
+    
+    Dim Rng As Range
+    Dim i As Integer
+    
+    Set Rng = Hoja.UsedRange
+    
+    Call ColocarFiltros(Hoja, Rng)
+    Rng.AutoFilter Field:=ColumnaFiltro, Criteria1:=Criteria
+    
+    If IsArray(ColumnasFiltradas) Then
+        For i = LBound(ColumnasFiltradas) To UBound(ColumnasFiltradas)
+            If IsNumeric(ColumnasFiltradas(i)) Then _
+                Hoja.Columns(ColumnasFiltradas(i)).EntireColumn.Hidden = True
+        Next i
+    Else
+        If IsNumeric(ColumnasFiltradas) Then _
+            Hoja.Columns(ColumnasFiltradas).EntireColumn.Hidden = True
+    End If
+    
+    Set RangoFiltrado = Rng.SpecialCells(xlCellTypeVisible)
+End Function
