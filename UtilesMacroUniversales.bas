@@ -1671,3 +1671,11 @@ Sub ComboToCombo(ByVal ComboBoxInput As Object, _
         End If
     Next Item
 End Sub
+
+Sub ColocarFiltros(Optional ByVal Hoja As Worksheet, Optional Rng As Range)
+    If Hoja Is Nothing Then Set Hoja = ActiveSheet
+    If Rng Is Nothing Then Set Rng = Hoja.UsedRange
+    
+    If Hoja.AutoFilterMode Then Rng.AutoFilter
+    Rng.AutoFilter
+End Sub
