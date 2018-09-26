@@ -1705,3 +1705,23 @@ Public Function RangoFiltrado(ByVal ColumnaFiltro As Integer, _
     
     Set RangoFiltrado = Rng.SpecialCells(xlCellTypeVisible)
 End Function
+
+Public Function RangoNoBlanks(Optional ByVal Hoja As Worksheet) As Range
+    Dim RngUsado As Range
+    Dim celda As Range
+    Dim RngNoBlanks As Range
+    
+    If Hoja Is Nothing Then Set Hoja = ActiveSheet
+    Set RngUsado = Hoja.UsedRange
+    For Each celda In RngUsado.Cells
+        If celda.Value <> "" Then
+            If RngNoBlanks Is Nothing Then
+                Set RngNoBlanks = celda
+            Else
+                Set RngNoBlanks = Application.Union(RngNoBlanks, celda)
+            End If
+        End If
+    Next celda
+    
+    Set RangoNoBlanks = RngNoBlanks
+End Function
