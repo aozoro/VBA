@@ -1795,3 +1795,73 @@ Function ElementosIguales(ByVal Dimensiones As Variant) As Boolean
     
     ElementosIguales = sw
 End Function
+Public Function MatrizDimension(ByVal Arreglo As Variant) As Long
+    On Error GoTo Err
+    Dim i As Integer
+    Dim tmp As Long
+    
+    i = 0
+    Do While True
+        i = i + 1
+        tmp = UBound(Arreglo, i)
+    Loop
+Err:
+    MatrizDimension = i - 1
+End Function
+
+Sub PrintArray(ByVal Arreglo As Variant, Optional ByVal MensajeBox As Boolean = False)
+    Dim msj As String
+    Dim d As Integer
+    Dim i As Double, j As Double
+    
+    If IsArray(Arreglo) Then
+        d = MatrizDimension(Arreglo)
+        Select Case d
+            Case 0
+                msj = "matriz vacía"
+            Case 1
+                msj = Arreglo(LBound(Arreglo))
+                For i = LBound(Arreglo) + 1 To UBound(Arreglo)
+                    msj = msj & vbCrLf & Arreglo(i)
+                Next i
+            Case 2
+                msj = Arreglo(LBound(Arreglo, 1), LBound(Arreglo, 2))
+                For j = LBound(Arreglo, 2) + 1 To UBound(Arreglo, 2)
+                    msj = msj & vbTab & Arreglo(LBound(Arreglo, 1), j)
+                Next j
+                
+                For i = LBound(Arreglo, 1) + 1 To UBound(Arreglo, 1)
+                    msj = msj & vbCrLf & Arreglo(i, LBound(Arreglo, 2))
+                    For j = LBound(Arreglo, 2) + 1 To UBound(Arreglo, 2)
+                         msj = msj & vbTab & Arreglo(i, j)
+                    Next j
+                Next i
+            Case 3
+                msj = "No soporta matrices 3D"
+        End Select
+    End If
+    
+    If MensajeBox Then
+        MsgBox msj
+    Else
+        Debug.Print msj
+    End If
+End Sub
+
+Function MultMx(ParamArray Matrices() As Variant) As Variant
+    Dim i As Integer
+    Dim Multiplicacion
+    
+    Multiplicacion = Matrices(i)
+    For i = LBound(Matrices) + 1 To UBound(Matrices)
+        Multiplicacion = Application.WorksheetFunction.MMult(Multiplicacion, Matrices(i))
+    Next i
+    
+    MultMx = Multiplicacion
+End Function
+
+Function T(Matriz As Variant) As Variant
+    If IsArray(Matriz) Then
+        T = Application.WorksheetFunction.Transpose(Matriz)
+    End If
+End Function
