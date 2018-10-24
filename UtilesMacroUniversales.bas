@@ -1778,3 +1778,20 @@ Public Function FilaElementoRango(ByVal Elemento As Variant, ByVal Columna As In
 NoEncontrado:
     FilaElementoRango = 0
 End Function
+
+Function ElementosIguales(ByVal Dimensiones As Variant) As Boolean
+    Dim i As Integer
+    Dim sw As Boolean
+    Dim Elemento As Variant
+    
+    sw = True
+    Elemento = Dimensiones(LBound(Dimensiones))
+    For i = LBound(Dimensiones) + 1 To UBound(Dimensiones)
+        If Elemento <> Dimensiones(i) Then
+            sw = False
+            Exit For
+        End If
+    Next i
+    
+    ElementosIguales = sw
+End Function
