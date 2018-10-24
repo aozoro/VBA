@@ -1865,3 +1865,16 @@ Function T(Matriz As Variant) As Variant
         T = Application.WorksheetFunction.Transpose(Matriz)
     End If
 End Function
+
+Sub Rscript(ByVal PathPrograma As String, ByVal PathScript As String)
+    Dim shell As Object
+    Set shell = VBA.CreateObject("WScript.Shell")
+    Dim waitTillComplete As Boolean: waitTillComplete = True
+    Dim style As Integer: style = 1
+    Dim errorCode As Variant
+    Dim Path As String
+    
+    Path = """" & PathPrograma & """ """ & PathScript & """"
+    
+    errorCode = shell.Run(Path, style, waitTillComplete)
+End Sub
