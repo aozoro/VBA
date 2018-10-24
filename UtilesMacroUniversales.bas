@@ -24,15 +24,15 @@ Public Function CrearLlave(ParamArray Args() As Variant) As String
 End Function
 
 Sub LimpiarCarpeta(ByVal NomCarpeta As String)
-    Dim MyFolder As String, myfile As String
+    Dim MyFolder As String, Myfile As String
     Dim Path As String
     
     Path = NomCarpeta
-    myfile = Dir(Path & "\*")
-    Do While myfile <> ""
-        myfile = Path & "\" & myfile
-        Kill myfile
-        myfile = Dir
+    Myfile = Dir(Path & "\*")
+    Do While Myfile <> ""
+        Myfile = Path & "\" & Myfile
+        Kill Myfile
+        Myfile = Dir
     Loop
 End Sub
 
@@ -47,16 +47,16 @@ Sub CrearCarpeta(ByVal Ruta As String, ByVal NomCarpeta As String)
 End Sub
 
 Sub Borrar_Adjcorreos(name_carpeta As String)
-    Dim MyFolder As String, myfile As String
+    Dim MyFolder As String, Myfile As String
     Dim Path As String
     
     MyFolder = Format(Date, "dd-mm-yyyy") & "_" & name_carpeta
     Path = "C:\" & "" & MyFolder
-    myfile = Dir(Path & "\*.msg")
-    Do While myfile <> ""
-        myfile = Path & "\" & myfile
-        Kill myfile
-        myfile = Dir
+    Myfile = Dir(Path & "\*.msg")
+    Do While Myfile <> ""
+        Myfile = Path & "\" & Myfile
+        Kill Myfile
+        Myfile = Dir
     Loop
 End Sub
 
@@ -118,7 +118,7 @@ Sub QuitarFilasEnBlanco(ByVal NumeroDeColumna As Integer, Optional ByVal Hoja As
     End If
     
     With Hoja
-        If .Cells(1, NumeroDeColumna).End(xlDown).Address <> .Cells(1048576, NumeroDeColumna).End(xlUp).Address Then
+        If .Cells(1, NumeroDeColumna).End(xlDown).Address <> .Cells(.Rows.Count, NumeroDeColumna).End(xlUp).Address Then
             .Cells(1, NumeroDeColumna).EntireColumn.SpecialCells(xlCellTypeBlanks).EntireRow.Delete
         End If
     End With
@@ -169,7 +169,7 @@ Sub DepuracionFilasBlanksDigitacion(Optional ByVal Hoja As Worksheet)
 End Sub
 
 Public Sub AgregarHojas(ByVal cantidad As Integer, _
-    Optional ByVal nombre As String, _
+    Optional ByVal Nombre As String, _
     Optional ByVal Libro As Workbook)
     
     Dim i As Integer
@@ -183,7 +183,7 @@ Public Sub AgregarHojas(ByVal cantidad As Integer, _
     For i = 1 To cantidad
         With Libro
             Set Hoja = .Worksheets.Add(After:=.Worksheets(j))
-            Hoja.Name = nombre & i
+            Hoja.Name = Nombre & i
             
             j = j + 1
         End With
@@ -192,7 +192,7 @@ Public Sub AgregarHojas(ByVal cantidad As Integer, _
     If cantidad = 1 Then
         Hoja.Name = Left(Hoja.Name, Len(Hoja.Name) - 1)
     End If
-    On Error GoTo 0 
+    On Error GoTo 0
 End Sub
 
 Public Function SumaFilasEnLibro(ByVal Libro As Workbook, _
@@ -326,19 +326,19 @@ Sub ConsolidarHojas(Optional ByVal Libro As Workbook, _
 End Sub
 
 Public Function VerificadorDeColumnas(ByVal NumeroDeColumnas As Integer) As Boolean
-    Dim K As Integer
+    Dim k As Integer
     Dim NumeroDeColumnasError As Integer
 
     VerificadorDeColumnas = False
-    K = Cells(1, 16376).End(xlToLeft).column
-    If K = NumeroDeColumnas Then
+    k = Cells(1, 16376).End(xlToLeft).Column
+    If k = NumeroDeColumnas Then
         VerificadorDeColumnas = True
     Else
-        If K > NumeroDeColumnas Then
-            NumeroDeColumnasError = K - NumeroDeColumnas
+        If k > NumeroDeColumnas Then
+            NumeroDeColumnasError = k - NumeroDeColumnas
             MsgBox "Hay más de " & NumeroDeColumnas & " Columnas. Por favor corregir la(s) " & NumeroDeColumnasError & " columnas de más manualmente de la hoja " & ActiveSheet.Name
         Else
-            NumeroDeColumnasError = NumeroDeColumnas - K
+            NumeroDeColumnasError = NumeroDeColumnas - k
             MsgBox "Hay menos " & NumeroDeColumnas & " Columnas. Por favor corregir la(s) " & NumeroDeColumnasError & " columnas faltantes manualmente de la hoja " & ActiveSheet.Name
         End If
     End If
@@ -372,18 +372,18 @@ Public Function MontoDeComaAPunto(ByVal Importe As Variant) As Variant
 End Function
 
 Public Function BuscadorDeEncabezado(ByVal Hoja As Worksheet, ParamArray NombreDeEncabezado() As Variant) As Integer
-    Dim i As Integer, j As Integer, K As Integer, T As Integer
+    Dim i As Integer, j As Integer, k As Integer, T As Integer
     Dim sw As Boolean
 
     sw = False
     T = UBound(NombreDeEncabezado)
 
     With Hoja
-        K = .Cells(1, .Columns.Count).End(xlToLeft).column
-        For i = 1 To K
+        k = .Cells(1, .Columns.Count).End(xlToLeft).Column
+        For i = 1 To k
             For j = 0 To T
                 On Error Resume Next
-                If .Cells(1, i).Value = NombreDeEncabezado(j) Then
+                If UCase(.Cells(1, i).Value) = UCase(NombreDeEncabezado(j)) Then
                     sw = True
                     If Err.Number <> 0 Then sw = False
                     Exit For
@@ -417,14 +417,14 @@ Public Function ContarSinRepetirOrdenando(ByVal NumeroDeColumna As Integer, Opti
         If Cells(i - 1, NumeroDeColumna) <> Cells(i, NumeroDeColumna).Value Then j = j + 1
     Next i
     
-    ContarSinRepetir = j    
+    ContarSinRepetirOrdenando = j
 End Function
 
 Public Function ElementoEnVector(ByVal Elemento, ByVal Vector) As Boolean
     Dim Matriz()
     Dim T As Integer
     Dim i As Integer
-    Dim X
+    Dim x
     
     T = UBound(Vector)
     ReDim Matriz(T, 0)
@@ -433,11 +433,11 @@ Public Function ElementoEnVector(ByVal Elemento, ByVal Vector) As Boolean
     Next i
     
     On Error Resume Next
-    X = Application.WorksheetFunction.VLookup(Elemento, Matriz, 1, 0)
+    x = Application.WorksheetFunction.VLookup(Elemento, Matriz, 1, 0)
     If Err.Number <> 0 Then
         On Error GoTo 0
         On Error Resume Next
-        X = Application.WorksheetFunction.VLookup(Elemento * 1, Matriz, 1, 0)
+        x = Application.WorksheetFunction.VLookup(Elemento * 1, Matriz, 1, 0)
         If Err.Number <> 0 Then
             ElementoEnVector = False
         Else
@@ -498,7 +498,7 @@ Sub CopiarColumnasDeUnaHojaAOtra(ByVal HojaOutput As Worksheet, ByVal HojaInput 
     Dim CondicionNumero As Integer
     Dim i As Double, N As Double
     Dim j As Integer
-    Dim K As Integer
+    Dim k As Integer
     Dim Rng As Range
     
     If Condicion = True Then
@@ -512,11 +512,11 @@ Sub CopiarColumnasDeUnaHojaAOtra(ByVal HojaOutput As Worksheet, ByVal HojaInput 
     N = HojaInput.Cells(Rows.Count, ColumnaCondicion).End(xlUp).Row
     For i = 2 To N
         If HojaInput.Cells(i, ColumnaCondicion).Value = CondicionNumero Then
-            K = 0
+            k = 0
             Set Rng = HojaOutput.Cells(Rows.Count, 1).End(xlUp).Offset(1, 0)
             For j = 0 To LimiteSuperior
-                HojaInput.Cells(i, NumeroDeColumna(j)).Copy Destination:=Rng.Offset(0, K)
-                K = K + 1
+                HojaInput.Cells(i, NumeroDeColumna(j)).Copy Destination:=Rng.Offset(0, k)
+                k = k + 1
             Next j
         End If
     Next i
@@ -544,6 +544,8 @@ Public Function ElegirCarpeta()
 End Function
 
 Public Function NuevoLibro(ParamArray NombreDeEncabezado() As Variant) As Workbook
+    'Crea un nuevo libro con los encabezados imputados
+    
     Dim UltimoIndice As Integer
     Dim i As Integer
     
@@ -588,6 +590,7 @@ Sub QuitarFilasEnBlancoC(ByVal NumeroDeColuma As Integer, _
                     Exit Do
                 End If
             Loop
+            
             Final = FilaBuscada - 1
             
             If sw = True And Inicial <> Final Then
@@ -603,13 +606,13 @@ Sub QuitarFilasEnBlancoC(ByVal NumeroDeColuma As Integer, _
     End With
 End Sub
 
-Sub SepararHojas(ByVal Folder As String, ByVal file As String)
+Sub SepararHojas(ByVal Folder As String, ByVal File As String)
     Dim Hoja As Worksheet
     Dim Libro As Workbook
     Dim LibroNuevo As Workbook
     Dim NombreHoja As String
     
-    Workbooks.Open FileName:=Folder & "\" & file
+    Workbooks.Open FileName:=Folder & "\" & File
     Set Libro = ActiveWorkbook
      
     If Libro.Worksheets.Count <> 1 Then
@@ -617,13 +620,13 @@ Sub SepararHojas(ByVal Folder As String, ByVal file As String)
             NombreHoja = Hoja.Name
             Hoja.Copy
             Set LibroNuevo = ActiveWorkbook
-            LibroNuevo.SaveAs FileName:=Folder & "\" & CrearLlave(NombreHoja, file)
-            LibroNuevo.Close savechanges:=False
+            LibroNuevo.SaveAs FileName:=Folder & "\" & CrearLlave(NombreHoja, File)
+            LibroNuevo.Close SaveChanges:=False
         Next Hoja
-        Libro.Close savechanges:=False
-        Kill Folder & "\" & file
+        Libro.Close SaveChanges:=False
+        Kill Folder & "\" & File
     Else
-        Libro.Close savechanges:=False
+        Libro.Close SaveChanges:=False
     End If
 End Sub
 
@@ -642,7 +645,7 @@ Sub DepuracionFilasBlanks(ByVal N As Integer, Optional ByVal Hoja As Worksheet =
             j = j + 1
         Loop
         
-        If .Range("E1").End(xlDown).Address <> .Range("E1048576").End(xlUp).Address Then
+        If .Range("E1").End(xlDown).Address <> .Cells(.Rows.Count, 5).End(xlUp).Address Then
             Call QuitarFilasEnBlancoConjuntas(Hoja, 5)
         End If
     End With
@@ -735,7 +738,7 @@ Sub MontosSinDecimales(Optional ByVal Hoja As Worksheet = Nothing, Optional ByVa
     On Error GoTo 0
 End Sub
 
-Public Function ContarSiVector(Vector() As Double, ByVal criteria As Double) As Integer
+Public Function ContarSiVector(Vector() As Double, ByVal Criteria As Double) As Integer
     Dim i&
     Dim U As Integer, L As Integer
     
@@ -743,7 +746,7 @@ Public Function ContarSiVector(Vector() As Double, ByVal criteria As Double) As 
     L = LBound(Vector)
     
     For i = L To U
-        ContarSiVector = ContarSiVector - (Vector(i) = criteria)
+        ContarSiVector = ContarSiVector - (Vector(i) = Criteria)
     Next i
 End Function
 
@@ -814,7 +817,7 @@ End Function
 Sub EliminadorDeColumnaConEncabezado(ByVal Hoja As Worksheet, _
     ParamArray NombreDeEncabezado() As Variant)
     
-    Dim i As Integer, j As Integer, K As Integer, T As Integer
+    Dim i As Integer, j As Integer, k As Integer, T As Integer
     Dim sw As Boolean
     Dim i_Criterio As Integer
     
@@ -822,8 +825,8 @@ Sub EliminadorDeColumnaConEncabezado(ByVal Hoja As Worksheet, _
     T = UBound(NombreDeEncabezado)
     
     With Hoja
-        K = .Cells(1, .Columns.Count).End(xlToLeft).column
-        For i = 1 To K
+        k = .Cells(1, .Columns.Count).End(xlToLeft).Column
+        For i = 1 To k
             For j = 0 To T
                 On Error Resume Next
                 If .Cells(1, i).Value = NombreDeEncabezado(j) Then
@@ -888,13 +891,13 @@ Public Function ModaDeColumnas(Optional ByVal Libro As Workbook = Nothing) As In
         
     If j = 0 Then
         With Libro.Worksheets(i + 1)
-            ModaDeColumnas = .Cells(1, .Columns.Count).End(xlToLeft).column
+            ModaDeColumnas = .Cells(1, .Columns.Count).End(xlToLeft).Column
         End With
     Else
         ReDim ContadorDeColumnas(j) As Integer
         For i = 0 To j
             With Libro.Worksheets(i + 1)
-                ContadorDeColumnas(i) = .Cells(1, .Columns.Count).End(xlToLeft).column
+                ContadorDeColumnas(i) = .Cells(1, .Columns.Count).End(xlToLeft).Column
             End With
         Next i
         
@@ -903,7 +906,7 @@ Public Function ModaDeColumnas(Optional ByVal Libro As Workbook = Nothing) As In
 End Function
 
 Public Function BuscadorDeEncabezadoAproximado( _
-    ByVal criteria As Variant, _
+    ByVal Criteria As Variant, _
     Optional ByVal Hoja As Worksheet)
         
     Dim i As Integer, T As Integer
@@ -912,9 +915,9 @@ Public Function BuscadorDeEncabezadoAproximado( _
     sw = False
     
     With Hoja
-        T = .Cells(1, .Columns.Count).End(xlToLeft).column
+        T = .Cells(1, .Columns.Count).End(xlToLeft).Column
         For i = 1 To T
-            If InStr(1, .Cells(1, i).Value, criteria, vbTextCompare) > 0 Then
+            If InStr(1, .Cells(1, i).Value, Criteria, vbTextCompare) > 0 Then
                 sw = True
                 Exit For
             End If
@@ -933,7 +936,7 @@ Public Function NumeroDeColumnas(Optional ByVal Hoja As Worksheet, _
     If Hoja Is Nothing Then Set Hoja = ActiveSheet
 
     With Hoja
-        NumeroDeColumnas = .Cells(CriterioFila, .Columns.Count).End(xlToLeft).column
+        NumeroDeColumnas = .Cells(CriterioFila, .Columns.Count).End(xlToLeft).Column
     End With
 End Function
 
@@ -956,18 +959,17 @@ Public Function RangoTotal(Optional ByVal Hoja As Worksheet = Nothing, _
     Optional ByVal CriterioFila As Double = 1) As Range
     
     Dim N As Double
-    Dim K As Integer
+    Dim k As Integer
     
     If Hoja Is Nothing Then Set Hoja = ActiveSheet
     
     N = EncontrarUltimaFila(Hoja, CriterioColumna)
-    K = NumeroDeColumnas(Hoja, CriterioFila)
+    k = NumeroDeColumnas(Hoja, CriterioFila)
     
     With Hoja
-        Set RangoTotal = .Range(.Cells(1, 1), .Cells(N, K))
+        Set RangoTotal = .Range(.Cells(1, 1), .Cells(N, k))
     End With
 End Function
-
 Sub FiltrarOrdenarHojaPorColumna(ByVal Columna As Integer, _
     Optional ByVal Hoja As Worksheet = Nothing, _
     Optional ByVal UltimaFila As Double, _
@@ -1054,21 +1056,25 @@ Public Function RangoAcotado(Optional ByVal Hoja As Worksheet, _
     With Hoja
         Set RangoAcotado = .Range(.Cells(FilaInicial, ColumnaInicial), .Cells(FilaFinal, ColumnaFinal))
     End With
+
 End Function
 
 Public Function SumaVectorInteger(ByRef Vector() As Integer) As Integer
     Dim i As Double, o As Double, T As Double
+    Dim SumaVector As Double
+    
     o = LBound(Vector)
     T = UBound(Vector)
     For i = o To T
         SumaVector = SumaVector + Vector(i)
     Next i
+    SumaVectorInteger = SumaVector
 End Function
 
 Sub BorrarFilasDistintasA(ByVal Hoja As Worksheet, _
     ByVal NumeroDeColuma As Integer, _
     ByVal UltimaFilaABuscar As Double, _
-    ParamArray criteria() As Variant)
+    ParamArray Criteria() As Variant)
 
     Dim FilaBuscada As Double
     Dim sw As Boolean
@@ -1076,7 +1082,7 @@ Sub BorrarFilasDistintasA(ByVal Hoja As Worksheet, _
     Dim sw2 As Boolean
 
     With Hoja
-        If UbicacionDelElementoEnVector(.Cells(UltimaFilaABuscar, NumeroDeColuma), criteria) = -1 Then
+        If UbicacionDelElementoEnVector(.Cells(UltimaFilaABuscar, NumeroDeColuma), Criteria) = -1 Then
             sw2 = True
         End If
 
@@ -1086,7 +1092,7 @@ Sub BorrarFilasDistintasA(ByVal Hoja As Worksheet, _
             Inicial = FilaBuscada
             Final = FilaBuscada
             Do While FilaBuscada <= UltimaFilaABuscar
-                If UbicacionDelElementoEnVector(.Cells(FilaBuscada, NumeroDeColuma).Value, criteria) = -1 Then
+                If UbicacionDelElementoEnVector(.Cells(FilaBuscada, NumeroDeColuma).Value, Criteria) = -1 Then
                     FilaBuscada = FilaBuscada + 1
                 Else
                     sw = True
@@ -1184,23 +1190,29 @@ Sub CambiarValoresCeldas(ByVal Columna As Integer, _
     Next i
 End Sub
 
-Sub FormatoTablaQuince(Optional ByVal Hoja As Worksheet)
-    Dim Rng As Range
-    Dim nombre As String
+Sub FormatoTablaQuince(Optional ByVal Hoja As Worksheet, _
+    Optional ByVal Centrado As Boolean = False, _
+    Optional ByVal Ajustado As Boolean = False)
     
-    nombre = Hoja.Name
+    Dim Rng As Range
+    Dim Nombre As String
+    
+    Nombre = Hoja.Name
     Set Rng = RangoCurrentRegion(Hoja)
     Rng.Columns.AutoFit
     
     With Hoja
-        .ListObjects.Add(xlSrcRange, Rng, , xlYes).Name = nombre
+        .ListObjects.Add(xlSrcRange, Rng, , xlYes).Name = Nombre
         '.ListObjects(Nombre).TableStyle = "TableStyleMedium15" 'con lineas de columnas
-        .ListObjects(nombre).TableStyle = "TableStyleMedium1" 'sin lineas de columnas
+        .ListObjects(Nombre).TableStyle = "TableStyleMedium1" 'sin lineas de columnas
     End With
+    
+    If Centrado Then Rng.HorizontalAlignment = xlCenter
+    If Ajustado Then Rng.EntireColumn.AutoFit
 End Sub
 
 Public Function RangoCurrentRegion(Optional ByVal Hoja As Worksheet, _
-    Optional ByVal fila As Double = 1, _
+    Optional ByVal Fila As Double = 1, _
     Optional ByVal Columna As Integer = 1) As Range
     
     If Hoja Is Nothing Then Set Hoja = ActiveSheet
@@ -1211,14 +1223,14 @@ Sub BorrarFilasIgualesA(ByVal Hoja As Worksheet, _
     ByVal Columna As Integer, _
     ByVal PrimeraFila As Double, _
     ByVal UltimaFila As Double, _
-    ParamArray criteria() As Variant)
+    ParamArray Criteria() As Variant)
     
     Dim sw As Boolean, sw2 As Boolean
     Dim FilaBuscada As Double
     Dim Inicial As Double, Final As Double
     
     With Hoja
-        If UbicacionDelElementoEnVector(.Cells(UltimaFila, Columna), criteria) <> -1 Then
+        If UbicacionDelElementoEnVector(.Cells(UltimaFila, Columna), Criteria) <> -1 Then
             sw2 = True 'el ultimo elemento es un criterio
         End If
     
@@ -1229,7 +1241,7 @@ Sub BorrarFilasIgualesA(ByVal Hoja As Worksheet, _
             Inicial = FilaBuscada
             Final = FilaBuscada
             Do While FilaBuscada <= UltimaFila
-                If UbicacionDelElementoEnVector(.Cells(FilaBuscada, Columna).Value, criteria) <> -1 Then
+                If UbicacionDelElementoEnVector(.Cells(FilaBuscada, Columna).Value, Criteria) <> -1 Then
                     FilaBuscada = FilaBuscada + 1
                 Else
                     sw = True
@@ -1248,7 +1260,7 @@ Sub BorrarFilasIgualesA(ByVal Hoja As Worksheet, _
             If sw2 = True And FilaBuscada > UltimaFila Then
                 .Range(.Cells(Inicial, Columna), .Cells(Final, Columna).EntireRow).Delete
             End If
-        Loop       
+        Loop
     End With
 End Sub
 
@@ -1260,26 +1272,26 @@ Sub CrearColumnaLlave(ByVal Hoja As Worksheet, _
     ParamArray Columnas() As Variant)
     
     Dim i As Double, N As Double
-    Dim j As Integer, K As Integer, T As Integer
+    Dim j As Integer, k As Integer, T As Integer
     Dim llave As String
     
     T = UBound(Columnas)
     
     If MaximoDeFilas = True Then
-        For j = 0 To K
+        For j = 0 To k
             N = Application.WorksheetFunction.Max(N, EncontrarUltimaFila(Hoja, Columnas(j)))
         Next j
     Else
         N = EncontrarUltimaFila(Hoja, Columnas(j))
-        For j = 1 To K
+        For j = 1 To k
             N = Application.WorksheetFunction.Min(N, EncontrarUltimaFila(Hoja, Columnas(j)))
         Next j
     End If
     
-    K = NumeroDeColumnas(Hoja)
-    K = K + 1
+    k = NumeroDeColumnas(Hoja)
+    k = k + 1
     With Hoja
-        .Cells(1, K).Value = NombreDeEncabezado
+        .Cells(1, k).Value = NombreDeEncabezado
         If Numerico = True Then
             For i = 2 To N
                 For j = 0 To T
@@ -1288,7 +1300,7 @@ Sub CrearColumnaLlave(ByVal Hoja As Worksheet, _
                     If Err.Number <> 0 Then llave = CrearLlave(llave, .Cells(i, Columnas(j)).Value)
                     On Error GoTo 0
                 Next j
-                 .Cells(i, K).Value = Mid(llave, 2)
+                 .Cells(i, k).Value = Mid(llave, 2)
                  llave = ""
             Next i
         Else
@@ -1296,7 +1308,7 @@ Sub CrearColumnaLlave(ByVal Hoja As Worksheet, _
                 For j = 0 To T
                     llave = CrearLlave(llave, .Cells(i, Columnas(j)).Value)
                 Next j
-                .Cells(i, K).Value = llave
+                .Cells(i, k).Value = llave
                 llave = ""
             Next i
         End If
@@ -1304,7 +1316,7 @@ Sub CrearColumnaLlave(ByVal Hoja As Worksheet, _
     
     If UbicacionDeEncabezado > 0 Then
         With Hoja
-            .Cells(1, K).EntireColumn.Cut
+            .Cells(1, k).EntireColumn.Cut
             .Cells(1, UbicacionDeEncabezado).Insert xlToRight
         End With
     End If
@@ -1319,7 +1331,7 @@ Sub CrearColumnaConteo(ByVal ColumnaInput As Integer, _
     Dim Rng As Range
     Dim i As Double
     Dim N As Double
-    Dim K As Integer
+    Dim k As Integer
     
     Set Rng = RangoTotalColumna(ColumnaInput, _
         PrimeraFila:=2, _
@@ -1334,20 +1346,20 @@ Sub CrearColumnaConteo(ByVal ColumnaInput As Integer, _
 End Sub
 
 Public Function CrearFiltroQuery(ByVal ColumnNumber As Integer, ByVal Filtros As Variant)
-    Dim column As String
+    Dim Column As String
     Dim i As Integer
     Dim T As Integer
     Dim o As Integer
     
     o = LBound(Filtros) + 1
     T = UBound(Filtros)
-    column = "[Column" & ColumnNumber & "] = "
+    Column = "[Column" & ColumnNumber & "] = "
     
-    CrearFiltroQuery = column & Filtros(LBound(Filtros))
+    CrearFiltroQuery = Column & Filtros(LBound(Filtros))
     
     For i = o To T
-        CrearFiltroQuery = CrearFiltroQuery & " or " & column & Filtros(i)
-    Next i  
+        CrearFiltroQuery = CrearFiltroQuery & " or " & Column & Filtros(i)
+    Next i
 End Function
 
 Public Function TextToMatrix(ByVal text As Variant, Optional ByVal Duplicados As Boolean = False) As Variant
@@ -1432,16 +1444,16 @@ End Function
 
 Sub InsertarColumnasNuevas(ByVal ubicacion As Integer, ByVal Hoja As Worksheet, ParamArray Etiquetas() As Variant)
     Dim i, o, T As Integer
-    Dim indice As Integer
+    Dim Indice As Integer
     
     o = LBound(Etiquetas)
     T = UBound(Etiquetas)
     
     For i = o To T
-        indice = T - i
+        Indice = T - i
         With Hoja
             .Cells(1, ubicacion).EntireColumn.Insert Shift:=xlToRight
-            .Cells(1, ubicacion).Value = Etiquetas(indice)
+            .Cells(1, ubicacion).Value = Etiquetas(Indice)
         End With
     Next i
 End Sub
@@ -1591,17 +1603,17 @@ Public Function ColumnToMatrix(ByVal Columna As Integer, _
     Dim T As Double
     Dim celda As Range
     Dim Matriz()
-    Dim dimension As Integer
+    Dim Dimension As Integer
     
     If Hoja Is Nothing Then Set Hoja = ActiveSheet
     T = EncontrarUltimaFila(Hoja, Columna)
     Set Rng = RangoTotalColumna(Columna, FilaInicial, T, Hoja)
     
-    dimension = 0
+    Dimension = 0
     For Each celda In Rng.Cells
-        ReDim Preserve Matriz(dimension)
-        Matriz(dimension) = celda.Value
-        dimension = dimension + 1
+        ReDim Preserve Matriz(Dimension)
+        Matriz(Dimension) = celda.Value
+        Dimension = Dimension + 1
     Next celda
     
     ColumnToMatrix = Matriz
@@ -1680,18 +1692,20 @@ Sub ColocarFiltros(Optional ByVal Hoja As Worksheet, Optional Rng As Range)
     Rng.AutoFilter
 End Sub
 
-Public Function RangoFiltrado(ByVal ColumnaFiltro As Integer, _
-    ByVal Criteria As String, _
-    ByVal ColumnasFiltradas, _
+Public Function RangoFiltrado(Optional ByVal ColumnaFiltro As Integer, _
+    Optional ByVal Criteria As String, _
+    Optional ByVal ColumnasFiltradas, _
+    Optional ByVal Rng As Range, _
     Optional ByVal Hoja As Worksheet) As Range
     
-    Dim Rng As Range
     Dim i As Integer
     
-    Set Rng = Hoja.UsedRange
+    If Rng Is Nothing Then Set Rng = Hoja.UsedRange
     
-    Call ColocarFiltros(Hoja, Rng)
-    Rng.AutoFilter Field:=ColumnaFiltro, Criteria1:=Criteria
+    If ColumnaFiltro <> 0 And Criteria <> "" Then
+        Call ColocarFiltros(Hoja, Rng)
+        Rng.AutoFilter Field:=ColumnaFiltro, Criteria1:=Criteria
+    End If
     
     If IsArray(ColumnasFiltradas) Then
         For i = LBound(ColumnasFiltradas) To UBound(ColumnasFiltradas)
@@ -1703,7 +1717,7 @@ Public Function RangoFiltrado(ByVal ColumnaFiltro As Integer, _
             Hoja.Columns(ColumnasFiltradas).EntireColumn.Hidden = True
     End If
     
-    Set RangoFiltrado = Rng.SpecialCells(xlCellTypeVisible)
+    Set RangoFiltrado = Hoja.UsedRange.SpecialCells(xlCellTypeVisible)
 End Function
 
 Public Function RangoNoBlanks(Optional ByVal Hoja As Worksheet) As Range
@@ -1725,3 +1739,4 @@ Public Function RangoNoBlanks(Optional ByVal Hoja As Worksheet) As Range
     
     Set RangoNoBlanks = RngNoBlanks
 End Function
+
