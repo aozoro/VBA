@@ -1740,3 +1740,19 @@ Public Function RangoNoBlanks(Optional ByVal Hoja As Worksheet) As Range
     Set RangoNoBlanks = RngNoBlanks
 End Function
 
+Public Function ColumnasDeEncabezado(ByVal Hoja As Worksheet, ParamArray Criterios() As Variant)
+    Dim i As Integer, j As Integer
+    Dim Arreglo()
+    Dim Columna As Integer
+    j = 0
+    For i = LBound(Criterios) To UBound(Criterios)
+        Columna = BuscadorDeEncabezado(Hoja, Criterios(i))
+        If Columna >= 1 Then
+            ReDim Preserve Arreglo(j)
+                Arreglo(j) = Columna
+            j = j + 1
+        End If
+    Next i
+    
+    ColumnasDeEncabezado = Arreglo
+End Function
