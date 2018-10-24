@@ -1766,3 +1766,15 @@ Sub ObjetoHabilitado(ByVal Objeto As Object, ByVal Habilitado As Boolean)
         Objeto.BackColor = RGB(220, 220, 220)
     End If
 End Sub
+
+Public Function FilaElementoRango(ByVal Elemento As Variant, ByVal Columna As Integer, Optional ByVal Hoja As Worksheet) As Double
+    Dim Rng As Range
+    
+    On Error GoTo NoEncontrado
+    If Hoja Is Nothing Then Set Hoja = ActiveSheet
+    Set Rng = RangoTotalColumna(Columna, 2, Hoja:=Hoja)
+    FilaElementoRango = Application.WorksheetFunction.Match(Elemento, Rng, 0) + 1
+    Exit Function
+NoEncontrado:
+    FilaElementoRango = 0
+End Function
