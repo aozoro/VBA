@@ -1756,3 +1756,13 @@ Public Function ColumnasDeEncabezado(ByVal Hoja As Worksheet, ParamArray Criteri
     
     ColumnasDeEncabezado = Arreglo
 End Function
+
+Sub ObjetoHabilitado(ByVal Objeto As Object, ByVal Habilitado As Boolean)
+    Objeto.Enabled = Habilitado
+    
+    If Habilitado Then
+        Objeto.BackColor = vbWhite
+    Else
+        Objeto.BackColor = RGB(220, 220, 220)
+    End If
+End Sub
