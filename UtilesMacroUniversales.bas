@@ -1878,3 +1878,11 @@ Sub Rscript(ByVal PathPrograma As String, ByVal PathScript As String)
     
     errorCode = shell.Run(Path, style, waitTillComplete)
 End Sub
+
+Function ConcatenarFolderFile(ByVal Folder As String, ByVal File As String) As String
+    If Right(Folder, 1) = "/" Then
+        ConcatenarFolderFile = Folder & File
+    Else
+        ConcatenarFolderFile = Folder & "/" & File
+    End If
+End Function
