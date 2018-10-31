@@ -1903,3 +1903,11 @@ Function ArchivosCarpeta(Folder)
     
     ArchivosCarpeta = Retorno
 End Function
+
+Public Function Coincidencia(ByVal ValorBuscado, ByVal Rng) As Double
+    On Error GoTo mch
+    Coincidencia = Application.WorksheetFunction.Match(ValorBuscado, Rng, 0)
+    Exit Function
+mch:
+    Coincidencia = 0
+End Function
