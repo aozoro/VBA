@@ -1886,3 +1886,20 @@ Function ConcatenarFolderFile(ByVal Folder As String, ByVal File As String) As S
         ConcatenarFolderFile = Folder & "/" & File
     End If
 End Function
+
+Function ArchivosCarpeta(Folder)
+    Dim File As String
+    Dim j As Integer
+    Dim Retorno() As String
+    
+    File = Dir(Folder & "\" & "*.xls*")
+    j = 0
+    Do While File <> ""
+        ReDim Preserve Retorno(j) As String
+        Retorno(j) = ConcatenarFolderFile(Folder, File)
+        j = j + 1
+        File = Dir
+    Loop
+    
+    ArchivosCarpeta = Retorno
+End Function
