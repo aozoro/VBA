@@ -451,7 +451,6 @@ End Function
 
 Public Function UbicacionDelElementoEnVector(ByVal Elemento As Variant, ByVal Lista As Variant) As Integer
     Dim i As Integer, T As Integer
-    Dim Numeracion() As Integer
     Dim Arreglo() As Variant
     
     T = UBound(Lista)
